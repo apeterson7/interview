@@ -17,19 +17,19 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, name="NAME")
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name="TYPE")
     private String type;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name="LEVEL")
     private String level;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name="TEXT")
     private String text;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name="ANSWER")
     private String answer;
 
 //    @Column(nullable = true)

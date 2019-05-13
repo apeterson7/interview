@@ -14,7 +14,7 @@ public class QuestionService {
     private QuestionRepository questionRepository;
 
     public List<Question> list(){
-        return questionRepository.findAll();
+        return (List) questionRepository.findAll();
     }
 
 
