@@ -3,10 +3,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.log4j.Log4j;
 
 import javax.persistence.*;
 import java.util.List;
 
+@Log4j
 @Entity
 @Data
 @AllArgsConstructor
@@ -29,8 +31,11 @@ public class Question {
     @Column(nullable = false, name="TEXT")
     private String text;
 
-    @Column(nullable = false, name="ANSWER")
+    @Column(name="ANSWER")
     private String answer;
+
+    @Column(name = "SCORE")
+    private Integer score;
 
 //    @Column(nullable = true)
 //    private List<String> options;
