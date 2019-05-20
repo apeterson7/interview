@@ -7,6 +7,7 @@ import lombok.extern.log4j.Log4j;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Log4j
 @Entity
@@ -24,8 +25,8 @@ public class Question {
             sequenceName = "answer_sequence",
             initialValue = 1000
     )
-    @Column(name = "ID", unique = true, nullable = false)
-    private long id;
+    @Column(name = "QUESTION_ID", unique = true, nullable = false)
+    private long question_id;
 
     @Column(nullable = false, unique = true, name="NAME")
     private String name;
@@ -45,12 +46,7 @@ public class Question {
     @Column(name = "SCORE")
     private Integer score;
 
-    @ManyToOne
-    @JoinColumn(name = "CANDIDATE_ID")
-    private Candidate candidate;
-
 //    @Column(nullable = true)
 //    private List<String> options;
-
-
+    
 }
