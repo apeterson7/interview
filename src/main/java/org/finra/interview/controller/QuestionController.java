@@ -11,10 +11,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.apache.log4j.Logger;
 
+import javax.validation.Valid;
+import java.util.List;
+
 
 @Log4j
-
 @RestController
+@CrossOrigin
 @RequestMapping("/api/questions")
 public class QuestionController {
 
@@ -25,6 +28,7 @@ public class QuestionController {
     private QuestionRepository questionRepository;
 
     @GetMapping
+    @CrossOrigin
     public Iterable<Question> findAll(){
 
 //        log.info("test");

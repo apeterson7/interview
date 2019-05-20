@@ -15,8 +15,15 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class Question {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = "answer_generator")
+    @SequenceGenerator(
+            name = "answer_generator",
+            sequenceName = "answer_sequence",
+            initialValue = 1000
+    )
+    @Column(name = "ID", unique = true, nullable = false)
     private long id;
 
     @Column(nullable = false, unique = true, name="NAME")
@@ -28,10 +35,10 @@ public class Question {
     @Column(nullable = false, name="LEVEL")
     private String level;
 
-    @Column(nullable = false, name="TEXT")
+    @Column(nullable = false, name="TEXT", length=10485760)
     private String text;
 
-    @Column(name="ANSWER")
+    @Column(name="ANSWER",length=10485760)
     private String answer;
 
     @Column(name = "SCORE")

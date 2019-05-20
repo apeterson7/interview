@@ -6,10 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.List;
 
 @Log4j
@@ -33,6 +30,7 @@ public class Interviewer {
     private String lastname;
 
     private String email;
-
-    List<Candidate> candidateList;
+//
+//    @OneToMany
+//    private Candidate[] candidateList;
 }
