@@ -10,6 +10,7 @@ import java.util.List;
 
 @Log4j
 @Entity
+@Table(name = "QUESTION")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -43,6 +44,10 @@ public class Question {
 
     @Column(name = "SCORE")
     private Integer score;
+
+    @ManyToOne
+    @JoinColumn(name = "CANDIDATE_ID")
+    private Candidate candidate;
 
 //    @Column(nullable = true)
 //    private List<String> options;

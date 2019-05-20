@@ -12,6 +12,7 @@ import java.util.Set;
 
 @Log4j
 @Entity
+@Table(name = "CANDIDATE")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -51,8 +52,8 @@ public class Candidate {
 
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
-            mappedBy = "post")
-    private Set<Question> comments = new HashSet<>();
+            mappedBy = "candidate")
+    private Set<Question> questions = new HashSet<>();
 
 
     //question ids that have been assigned
