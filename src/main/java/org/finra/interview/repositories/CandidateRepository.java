@@ -8,4 +8,5 @@ public interface CandidateRepository extends CrudRepository<Candidate, Long> {
 
 //    List<Candidate> findByName(String name);
 
+
 }

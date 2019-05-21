@@ -10,6 +10,7 @@ import org.finra.interview.repositories.ResponseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import java.util.Arrays;
 
 @Service
@@ -52,26 +53,26 @@ public class SetUpService {
         candidate1.setQuestions(Arrays.asList(q1,q2));
         candidate2.setQuestions(Arrays.asList(q2,q3));
 
-        Response response1 = Response.builder().question(q1).candidate(candidate1).build();
-        Response response2 = Response.builder().question(q2).candidate(candidate1).build();
-        Response response3 = Response.builder().question(q2).candidate(candidate2).build();
-        Response response4 = Response.builder().question(q3).candidate(candidate2).build();
+//        Response response1 = Response.builder().Question(q1).candidate(candidate1).build();
+//        Response response2 = Response.builder().Question(q2).candidate(candidate1).build();
+//        Response response3 = Response.builder().Question(q2).candidate(candidate2).build();
+//        Response response4 = Response.builder().question(q3).candidate(candidate2).build();
 
 
 
-        candidate1.setResponses(Arrays.asList(response1, response2));
-        candidate2.setResponses(Arrays.asList(response3, response4));
+//        candidate1.setResponses(Arrays.asList(response1, response2));
+//        candidate2.setResponses(Arrays.asList(response3, response4));
 
 //        Interviewer interviewer = Interviewer.builder().email("test@test.test").firstname("alex").lastname("peterson").username("interviewer1").password("pword").build();
 
 //        interviewer.addCandidate(candidate1);
 //        interviewer.addCandidate(candidate2);
 
-//        interviewerRepository.save(interviewer);
+//        interviewerRepository.save(interviewer);import lombok.
 
         candidateRepository.saveAll(Arrays.asList(candidate1, candidate2));
 
-        responseRepository.saveAll(Arrays.asList(response1,response2,response3,response4));
+//        responseRepository.saveAll(Arrays.asList(response1,response2,response3,response4));
 
 
 

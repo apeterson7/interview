@@ -57,11 +57,11 @@ public class Candidate {
             inverseJoinColumns = { @JoinColumn(name = "QUESTION_ID") })
     private List<Question> questions = new ArrayList<>();
 
-    @OneToMany(
-            fetch = FetchType.EAGER,
-            mappedBy = "candidate"
-    )
-    private List<Response> responses = new ArrayList<>();
+//    @OneToMany(
+//            fetch = FetchType.EAGER,
+//            mappedBy = "candidate"
+//    )
+//    private List<Response> responses = new ArrayList<>();
 
 
     @ManyToOne(fetch = FetchType.EAGER)

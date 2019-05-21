@@ -28,11 +28,16 @@ public class SimpleController {
     @Autowired
     InterviewerRepository interviewerRepository;
 
+    @Value("${spring.jpa.hibernate.ddl-auto}")
+    private String ddl;
+
     @GetMapping()
     public String homePage(Model model) {
         model.addAttribute("appName", appName);
 
-        setUpService.setUp();
+        if(ddl.equals("create")){
+            setUpService.setUp();
+        }
 
         return "home";
     }

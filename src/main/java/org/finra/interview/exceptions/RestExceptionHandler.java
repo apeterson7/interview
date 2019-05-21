@@ -30,12 +30,16 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
 
     @ExceptionHandler({
             ConstraintViolationException.class,
-            DataIntegrityViolationException.class })
+            DataIntegrityViolationException.class,
+            QuestionAlreadyAssigneException.class,
+            CandidateNotFoundException.class  })
     public ResponseEntity<Object> handleBadRequest(
             Exception ex, WebRequest request) {
         return handleExceptionInternal(ex, ex.getLocalizedMessage(),
                 new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
+
+
 
 }
 

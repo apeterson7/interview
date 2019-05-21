@@ -1,13 +1,17 @@
 package org.finra.interview.controller;
 
 import lombok.extern.log4j.Log4j;
+import org.finra.interview.exceptions.CandidateNotFoundException;
+import org.finra.interview.exceptions.QuestionAlreadyAssigneException;
 import org.finra.interview.models.Candidate;
+import org.finra.interview.models.Question;
 import org.finra.interview.repositories.CandidateRepository;
+import org.finra.interview.services.CandidateService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Log4j
 @RestController
@@ -16,12 +20,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class CandidateController {
 
     @Autowired
-    private CandidateRepository candidateRepository;
+    private CandidateService candidateService;
 
     @GetMapping
     @CrossOrigin
     public Iterable<Candidate> findAll(){
 
-        return candidateRepository.findAll();
+        return candidateService.list();
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void addQuestionById(@RequestBody Question question, @PathVariable Long id)
+            throws CandidateNotFoundException, QuestionAlreadyAssigneException
+    {
+        candidateService.addQuestionById(question, id);
     }
 }
