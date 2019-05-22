@@ -3,10 +3,8 @@ package org.finra.interview.services;
 import org.finra.interview.models.Candidate;
 import org.finra.interview.models.Interviewer;
 import org.finra.interview.models.Question;
-import org.finra.interview.models.Response;
 import org.finra.interview.repositories.CandidateRepository;
 import org.finra.interview.repositories.InterviewerRepository;
-import org.finra.interview.repositories.ResponseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +20,6 @@ public class SetUpService {
     @Autowired
     InterviewerRepository interviewerRepository;
 
-    @Autowired
-    ResponseRepository responseRepository;
 
     public void setUp(){
         Candidate candidate1 = Candidate.builder()

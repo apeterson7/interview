@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.finra.interview.exceptions.QuestionNotFoundException;
 import org.finra.interview.models.Question;
 import org.finra.interview.repositories.QuestionRepository;
+import org.finra.interview.services.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -24,35 +25,27 @@ public class QuestionController {
 
 //    static Logger log = Logger.getLogger(QuestionController.class);
 
+    private final QuestionService questionService;
+
     @Autowired
-    private QuestionRepository questionRepository;
+    public QuestionController(QuestionService questionService){
+        this.questionService = questionService;
+    }
 
     @GetMapping
     @CrossOrigin
-    public Iterable<Question> findAll(){
-
-//        log.info("test");
-
-        return questionRepository.findAll();
-    }
+    public Iterable<Question> findAll(){ return questionService.list(); }
 
     @GetMapping("/{id}")
-    public Question findOne(@PathVariable Long id) throws QuestionNotFoundException{
-        return questionRepository.findById(id)
-                .orElseThrow(() -> new QuestionNotFoundException("Question "+id+" does not exit."));
-    }
+    public Question findById(@PathVariable Long id) throws QuestionNotFoundException{ return questionService.findById(id); }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Question create(@RequestBody Question question){
-        return questionRepository.save(question);
+        return questionService.save(question);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) throws QuestionNotFoundException{
-        questionRepository.findById(id)
-                .orElseThrow(() -> new QuestionNotFoundException("Question "+id+" does not exit."));
-        questionRepository.deleteById(id);
-    }
+    public void delete(@PathVariable Long id) throws QuestionNotFoundException{ questionService.deleteById(id); }
 
 }

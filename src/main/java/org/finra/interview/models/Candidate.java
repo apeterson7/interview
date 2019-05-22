@@ -56,14 +56,7 @@ public class Candidate {
             joinColumns = { @JoinColumn(name = "CANDIDATE_ID") },
             inverseJoinColumns = { @JoinColumn(name = "QUESTION_ID") })
     private List<Question> questions = new ArrayList<>();
-
-//    @OneToMany(
-//            fetch = FetchType.EAGER,
-//            mappedBy = "candidate"
-//    )
-//    private List<Response> responses = new ArrayList<>();
-
-
+    
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "interviewer_id")
     private Interviewer interviewer;

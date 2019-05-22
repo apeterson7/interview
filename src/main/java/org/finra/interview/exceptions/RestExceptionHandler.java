@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.io.FileNotFoundException;
+
 @Log4j
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler{
@@ -21,7 +23,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
 //                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 //    }
 
-    @ExceptionHandler({ QuestionNotFoundException.class })
+    @ExceptionHandler({
+            QuestionNotFoundException.class,
+            FileNotFoundException.class})
     protected ResponseEntity<Object> handleNotFound(
             Exception ex, WebRequest request) {
         return handleExceptionInternal(ex, "Book not found",
@@ -31,7 +35,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
     @ExceptionHandler({
             ConstraintViolationException.class,
             DataIntegrityViolationException.class,
-            QuestionAlreadyAssigneException.class,
+            QuestionAlreadyAssignedException.class,
             CandidateNotFoundException.class  })
     public ResponseEntity<Object> handleBadRequest(
             Exception ex, WebRequest request) {

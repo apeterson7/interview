@@ -25,9 +25,6 @@ public class SimpleController {
     @Autowired
     SetUpService setUpService;
 
-    @Autowired
-    InterviewerRepository interviewerRepository;
-
     @Value("${spring.jpa.hibernate.ddl-auto}")
     private String ddl;
 
