@@ -30,16 +30,10 @@ public class CandidateService {
         return candidateRepository.findAll();
     }
 
-    public void addQuestionById(Question question, Long id) throws CandidateNotFoundException, QuestionAlreadyAssignedException{
+    public void addQuestionsToCandidateById(List<Question> questions, Long id) throws CandidateNotFoundException {
         Candidate candidate = candidateRepository.findById(id)
                 .orElseThrow(() -> new CandidateNotFoundException("Question "+id+" does not exit."));
-        List<Question> questions = candidate.getQuestions();
-        if(questions.contains(question)){
-            throw new QuestionAlreadyAssignedException("Candidate "+candidate.getCandidate_id()+" is already assigned question_id "+question.getQuestion_id());
-        }else{
-            questions.add(question);
-            candidate.setQuestions(questions);
-        }
+        candidate.setQuestions(questions);
         candidateRepository.save(candidate);
     }
 

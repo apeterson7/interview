@@ -1,12 +1,10 @@
 package org.finra.interview.controller;
 
-import com.amazonaws.services.xray.model.Http;
 import lombok.extern.log4j.Log4j;
 import org.finra.interview.exceptions.CandidateNotFoundException;
 import org.finra.interview.exceptions.QuestionAlreadyAssignedException;
 import org.finra.interview.models.Candidate;
 import org.finra.interview.models.Question;
-import org.finra.interview.repositories.CandidateRepository;
 import org.finra.interview.services.CandidateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,11 +35,12 @@ public class CandidateController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void addQuestionById(@RequestBody Question question, @PathVariable Long id)
-            throws CandidateNotFoundException, QuestionAlreadyAssignedException
+    public void addQuestionsToCandidateById(@RequestBody List<Question> questions, @PathVariable Long id)
+            throws CandidateNotFoundException
     {
-        candidateService.addQuestionById(question, id);
+        candidateService.addQuestionsToCandidateById(questions, id);
     }
+
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
