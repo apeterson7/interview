@@ -18,10 +18,9 @@ import java.util.List;
 
 @Log4j
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/questions")
 public class QuestionController {
-
 
 //    static Logger log = Logger.getLogger(QuestionController.class);
 

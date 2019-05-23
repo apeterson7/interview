@@ -30,6 +30,12 @@ public class CandidateService {
         return candidateRepository.findAll();
     }
 
+    public Candidate findById(Long id) throws CandidateNotFoundException{
+        return candidateRepository.findById(id).orElseThrow(
+                () -> new CandidateNotFoundException("Question "+id+" does not exit.")
+        );
+    }
+
     public void addQuestionsToCandidateById(List<Question> questions, Long id) throws CandidateNotFoundException {
         Candidate candidate = candidateRepository.findById(id)
                 .orElseThrow(() -> new CandidateNotFoundException("Question "+id+" does not exit."));

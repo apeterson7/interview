@@ -14,7 +14,7 @@ import java.util.List;
 
 @Log4j
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/candidates")
 public class CandidateController {
 
@@ -29,11 +29,17 @@ public class CandidateController {
     @GetMapping
     @CrossOrigin
     public Iterable<Candidate> findAll(){
-
         return candidateService.list();
     }
 
+    @GetMapping("/{id}")
+    @CrossOrigin(origins = "http://localhost:4200")
+    public Candidate findById(@PathVariable Long id) throws CandidateNotFoundException{
+        return candidateService.findById(id);
+    }
+
     @PutMapping("/{id}")
+    @CrossOrigin(origins = "http://localhost:4200")
     @ResponseStatus(HttpStatus.OK)
     public void addQuestionsToCandidateById(@RequestBody List<Question> questions, @PathVariable Long id)
             throws CandidateNotFoundException
@@ -43,6 +49,7 @@ public class CandidateController {
 
 
     @DeleteMapping("/{id}")
+    @CrossOrigin
     @ResponseStatus(HttpStatus.OK)
     public void deleteCandidateById(@PathVariable Long id) throws CandidateNotFoundException{
         candidateService.removeCandidateById(id);

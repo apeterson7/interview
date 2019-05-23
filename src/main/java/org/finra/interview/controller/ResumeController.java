@@ -24,12 +24,14 @@ public class ResumeController {
     }
 
     @GetMapping("/candidate/{id}")
+    @CrossOrigin
     public File getResume(@PathVariable String id) throws IOException{
 
         return s3Service.retrieveFileFromS3(id);
     }
 
     @PostMapping("/candidate/{id}")
+    @CrossOrigin
     public void uploadResume(@PathVariable String id, @RequestBody File file){
 
         s3Service.uploadFileToS3(file, id);
