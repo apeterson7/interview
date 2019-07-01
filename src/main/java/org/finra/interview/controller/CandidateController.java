@@ -18,7 +18,6 @@ import java.util.List;
 @RequestMapping("/api/candidates")
 public class CandidateController {
 
-
     private final CandidateService candidateService;
 
     @Autowired
@@ -54,6 +53,12 @@ public class CandidateController {
     public void deleteCandidateById(@PathVariable Long id) throws CandidateNotFoundException{
         candidateService.removeCandidateById(id);
 
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Candidate create(@RequestBody Candidate candidate){
+        return candidateService.save(candidate);
     }
 
 }

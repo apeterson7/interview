@@ -36,6 +36,8 @@ public class CandidateService {
         );
     }
 
+    public Candidate save(Candidate candidate) { return candidateRepository.save(candidate); }
+
     public void addQuestionsToCandidateById(List<Question> questions, Long id) throws CandidateNotFoundException {
         Candidate candidate = candidateRepository.findById(id)
                 .orElseThrow(() -> new CandidateNotFoundException("Question "+id+" does not exit."));
