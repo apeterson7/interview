@@ -7,7 +7,12 @@ public class User {
 
 	private String userName;
 	private String password;
-	
+	private String status;
+
+	public User(String status){
+		this.status = status;
+	}
+
 //	public String getUserName() {
 //		return userName;
 //	}

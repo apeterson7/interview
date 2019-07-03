@@ -47,4 +47,5 @@ public class QuestionController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) throws QuestionNotFoundException{ questionService.deleteById(id); }
 
+
 }

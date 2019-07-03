@@ -6,19 +6,23 @@ import java.util.Base64;
 import javax.servlet.http.HttpServletRequest;
 
 import org.finra.interview.models.User;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@CrossOrigin
+@CrossOrigin("http://localhost:4200")
 public class UserController {
 
 	@RequestMapping("/login")
 	public boolean login(@RequestBody User user) {
 		return user.getUserName().equals("user") && user.getPassword().equals("password");
+	}
+
+	@GetMapping(produces = "application/json")
+	@RequestMapping({ "/validateLogin" })
+	public User validateLogin() {
+		System.out.println("validateLogin");
+		return new User("User successfully authenticated");
 	}
 
 	@RequestMapping("/user")
