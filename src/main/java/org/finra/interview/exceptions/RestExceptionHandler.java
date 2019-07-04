@@ -1,6 +1,8 @@
 package org.finra.interview.exceptions;
 
 import lombok.extern.log4j.Log4j;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.poifs.filesystem.NotOLE2FileException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +14,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 @Log4j
 @ControllerAdvice
@@ -43,6 +46,26 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
                 new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
+    @ExceptionHandler({
+        InvalidFormatException.class,
+        IOException.class
+    })
+    public  ResponseEntity<Object> handleInvalidDataError(
+            Exception ex, WebRequest request) {
+
+        return handleExceptionInternal(ex, ex.getLocalizedMessage(),
+                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler({
+            NotOLE2FileException.class
+    })
+    public  ResponseEntity<Object> handleFileFormatError(
+            Exception ex, WebRequest request) {
+
+        return handleExceptionInternal(ex, "File format must be .xlsx or .xls",
+                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
 
 
 }

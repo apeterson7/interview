@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Log4j
 @Service
@@ -44,7 +45,7 @@ public class ExcelUploadService {
 
     public List<Question> addQuestions(byte[] file) throws InvalidFormatException, IOException{
 
-        System.out.println("Bytes: "+file.length);
+        log.info("Bytes: "+file.length);
 
 
         File f = new File("test");
@@ -55,30 +56,28 @@ public class ExcelUploadService {
         os.close();
 
         List<Question> questions = new ArrayList<>();
-//        File f = new File("src/main/resources/staging.xlsx");
-//        file.transferTo(f);
 
         Workbook workbook = WorkbookFactory.create(f);
-        System.out.println("Workbook has " + workbook.getNumberOfSheets() + " Sheets : ");
 
         // Getting the Sheet at index zero
         Sheet sheet = workbook.getSheetAt(0);
 
-        // Create a DataFormatter to format and get each cell's value as String
-        DataFormatter dataFormatter = new DataFormatter();
+        Iterator<Row> rowIterator = sheet.rowIterator();
+        while (rowIterator.hasNext()) {
+            Row row = rowIterator.next();
 
-        try{
-            Iterator<Row> rowIterator = sheet.rowIterator();
-            while (rowIterator.hasNext()) {
-                Row row = rowIterator.next();
-                questions.add(validateQuestionRow(row));
-            }
+            Question question = validateQuestionRow(row);
+            if(question != null)
+                questions.add(question);
+        }
 
-        }catch(Exception e){ }
-
-        System.out.println(questions);
+//        System.out.println(questions);
         //Save all questions
 //        questionRepository.saveAll(questions);
+
+        f.delete();
+
+//        questions.stream().map(question -> question.setQuestion_id(null)).collect(Collectors.toList());
 
         return questions;
     }
@@ -87,11 +86,14 @@ public class ExcelUploadService {
         DataFormatter dataFormatter = new DataFormatter();
 
         //Log Row Info
-        row.forEach(cell -> { log.info(dataFormatter.formatCellValue(cell)+" "); });
+        row.forEach(cell -> {
+            log.info(dataFormatter.formatCellValue(cell)+" ");
+        });
         log.info("Row "+row.getRowNum());
 
         //Check First Row
         if(row.getRowNum() == 0){
+            System.out.println("Row 0");
             if(!(dataFormatter.formatCellValue(row.getCell(0)).equals("name"))&&
                     (dataFormatter.formatCellValue(row.getCell(1)).equals("type"))&&
                     (dataFormatter.formatCellValue(row.getCell(2)).equals("level"))&&
@@ -99,7 +101,8 @@ public class ExcelUploadService {
                     (dataFormatter.formatCellValue(row.getCell(4)).equals("answer"))&&
                     (dataFormatter.formatCellValue(row.getCell(5)).equals("score"))
                     ){
-                throw new InvalidFormatException("Document Missing Column Headers");
+                log.error("error detected");
+                throw new InvalidFormatException("invalid column names");
             }
         //Validate question rows
         }else {
@@ -112,22 +115,30 @@ public class ExcelUploadService {
             String score = dataFormatter.formatCellValue(row.getCell(5));
 
             if (!(Arrays.asList("single answer", "multiple choice").contains(type))) {
+                log.error("error detected");
+
                 throw new InvalidFormatException("Error Row " + row.getRowNum() + ": type must be 'single answer' or 'multiple choice'");
             }
             if (!(Arrays.asList("junior", "senior", "mid").contains(level))) {
+                log.error("error detected");
+
                 throw new InvalidFormatException("Error Row " + row.getRowNum() + ": level must be 'junior', 'senior' or 'mid'");
             }
             if (text.length() > 10485760 || answer.length() > 10485760) {
-                throw new InvalidFormatException("Error Row " + row.getRowNum() + ": Field too long");
+                log.error("error detected");
+
+                throw new InvalidFormatException("Error Row " + row.getRowNum() + ": text field too long");
             }
             try {
                 Integer.parseInt(score);
             } catch (NumberFormatException e) {
-                throw new InvalidFormatException("Error Row " + row.getRowNum() + ": Integer Expected");
+                log.error("error detected");
+
+                throw new InvalidFormatException("Error Row " + row.getRowNum() + ": score expects integer");
             }
 
             return Question.builder()
-
+//                    .question_id(null)
                     .name(name)
                     .type(type)
                     .level(level)
@@ -135,9 +146,8 @@ public class ExcelUploadService {
                     .answer(answer)
                     .score(Integer.parseInt(score))
                     .build();
-
         }
-        return new Question();
+        return null;
     }
 
     public static Candidate validateCandidateRow(){

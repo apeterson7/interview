@@ -19,7 +19,7 @@ import java.util.List;
 @Log4j
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/api/questions")
+@RequestMapping("/api")
 public class QuestionController {
 
 //    static Logger log = Logger.getLogger(QuestionController.class);
@@ -31,20 +31,28 @@ public class QuestionController {
         this.questionService = questionService;
     }
 
-    @GetMapping
+    @GetMapping("questions")
     @CrossOrigin
     public Iterable<Question> findAll(){ return questionService.list(); }
 
-    @GetMapping("/{id}")
+    //changed
+    @GetMapping("question/{id}")
     public Question findById(@PathVariable Long id) throws QuestionNotFoundException{ return questionService.findById(id); }
 
-    @PostMapping
+    //changed
+    @PostMapping("/question")
     @ResponseStatus(HttpStatus.CREATED)
     public Question create(@RequestBody Question question){
+        System.out.println(question.toString());
         return questionService.save(question);
     }
 
-    @DeleteMapping("/{id}")
+    @PostMapping("/questions")
+    @ResponseStatus(HttpStatus.CREATED)
+    public List<Question> saveAll(@RequestBody List<Question> questions){ return questionService.saveAll(questions); }
+
+    //changed
+    @DeleteMapping("question/{id}")
     public void delete(@PathVariable Long id) throws QuestionNotFoundException{ questionService.deleteById(id); }
 
 

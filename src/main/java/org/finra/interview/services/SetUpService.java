@@ -42,6 +42,46 @@ public class SetUpService {
                 .status("new")
                 .build();
 
+        Candidate candidate3 = Candidate.builder()
+                .username("candidate3")
+                .password("roygbiv")
+                .firstname("Person1")
+                .lastname("Test")
+                .email("test@test.test")
+                .notes("In progress")
+                .status("interviewing")
+                .build();
+
+        Candidate candidate4 = Candidate.builder()
+                .username("candidate4")
+                .password("roygbiv")
+                .firstname("Person2")
+                .lastname("Test")
+                .email("test@test.test")
+                .notes("In progress")
+                .status("review")
+                .build();
+
+        Candidate candidate5 = Candidate.builder()
+                .username("candidate5")
+                .password("roygbiv")
+                .firstname("Person3")
+                .lastname("Test")
+                .email("test@test.test")
+                .notes("In progress")
+                .status("hired")
+                .build();
+
+        Candidate candidate6 = Candidate.builder()
+                .username("candidate6")
+                .password("roygbiv")
+                .firstname("Person4")
+                .lastname("Test")
+                .email("test@test.test")
+                .notes("In progress")
+                .status("rejected")
+                .build();
+
         Question q1 = Question.builder().name("question1").level("senior").type("single_answer").text("text1").answer("answer1").score(-1).build();
         Question q2 = Question.builder().name("question2").level("mid").type("single_answer").text("text2").answer("answer3").score(-1).build();
         Question q3 = Question.builder().name("question3").level("junior").type("single_answer").text("text3").answer("answer3").score(-1).build();
@@ -66,7 +106,7 @@ public class SetUpService {
 
 //        interviewerRepository.save(interviewer);import lombok.
 
-        candidateRepository.saveAll(Arrays.asList(candidate1, candidate2));
+        candidateRepository.saveAll(Arrays.asList(candidate1, candidate2, candidate3, candidate4, candidate5, candidate6));
 
 //        responseRepository.saveAll(Arrays.asList(response1,response2,response3,response4));
 

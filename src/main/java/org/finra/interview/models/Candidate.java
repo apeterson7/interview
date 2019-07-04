@@ -49,7 +49,7 @@ public class Candidate {
 
     @Column(name="STATUS")
     private String status;
-    //new, ready, pending-review, hired, rejected
+    //new, interviewing, review, hired, rejected
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "CANDIDATE_QUESTION",

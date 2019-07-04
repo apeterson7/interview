@@ -28,7 +28,7 @@ public class Question {
     @Column(name = "QUESTION_ID", unique = true, nullable = false)
     private long question_id;
 
-    @Column(nullable = false, unique = true, name="NAME")
+    @Column(nullable = false, name="NAME")
     private String name;
 
     @Column(nullable = false, name="TYPE")

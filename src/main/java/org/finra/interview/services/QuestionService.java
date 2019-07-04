@@ -38,6 +38,10 @@ public class QuestionService {
         return questionRepository.save(question);
     }
 
+    public List<Question> saveAll(List<Question> questions){
+        return (List) questionRepository.saveAll(questions);
+    }
+
     //get questions by filter
 
 }
