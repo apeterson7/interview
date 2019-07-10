@@ -1,24 +1,37 @@
 package org.finra.interview.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-@Log4j
+//hibernate
 @Entity
 @Table(name = "CANDIDATE")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "candidate_id")
+//lombok
+@Log4j
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class Candidate {
+
     @Id
     @GeneratedValue(generator = "candidate_generator")
     @SequenceGenerator(
@@ -47,20 +60,32 @@ public class Candidate {
     @Column(name="NOTES")
     private String notes;
 
-    @Column(name="STATUS")
+    @Column(nullable = false, name="STATUS")
     private String status;
     //new, interviewing, review, hired, rejected
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(
+            cascade = CascadeType.ALL
+    )
     @JoinTable(name = "CANDIDATE_QUESTION",
             joinColumns = { @JoinColumn(name = "CANDIDATE_ID") },
             inverseJoinColumns = { @JoinColumn(name = "QUESTION_ID") })
     private List<Question> questions = new ArrayList<>();
-    
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "interviewer_id")
-    private Interviewer interviewer;
 
+//    @JsonManagedReference
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            mappedBy = "candidate"
+    )
+    private List<Interview> interviews = new ArrayList<>();
+
+    @CreationTimestamp
+    @Column(name = "CREATED_TS")
+    private LocalDateTime created_ts;
+
+    @UpdateTimestamp
+    @Column(name = "REVIEWED_TS")
+    private LocalDateTime updated_ts;
 
     //question ids that have been assigned
 //    List<Question> questionList;

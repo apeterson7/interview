@@ -36,7 +36,11 @@ public class CandidateService {
         );
     }
 
-    public Candidate save(Candidate candidate) { return candidateRepository.save(candidate); }
+    public Candidate save(Candidate candidate) {
+        log.info(candidate.toString());
+        System.out.println(candidate.toString());
+        return candidateRepository.save(candidate);
+    }
 
     public void addQuestionsToCandidateById(List<Question> questions, Long id) throws CandidateNotFoundException {
         Candidate candidate = candidateRepository.findById(id)
@@ -51,14 +55,6 @@ public class CandidateService {
         candidateRepository.deleteById(id);
         s3Service.deleteFileFromS3(id.toString());
     }
-    //get Questions
 
-    //get responses
-
-    //update responses (all or none)
-
-    //get status
-
-    //set status
 
 }

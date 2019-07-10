@@ -62,3 +62,10 @@ insert into question values(35, 'answer','junior','KMS encryption', -1,'Describe
 insert into question values(36, 'answer','junior','Lambdas', -1,'Describe the advantages and drawbacks of Lambdas.','single');
 insert into question values(37, 'Monitor, Log, Provision','junior','AWS DevOps', -1,'Describe Cloudwatch, Cloudtrail, CloudFormation.','single');
 insert into question values(38, 'answer','junior','SNS/SQS', -1,'Describe the purpose and differences between SNS and SQS','single');
+
+-- interviews
+-- insert into interview values(1, 'new');
+-- insert into interview values(2, 'pending');
+-- insert into interview values(3, 'hired');
+-- insert into interview values(4, 'rejected');
+-- insert into interview values(5, 'new');

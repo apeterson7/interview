@@ -1,10 +1,8 @@
 package org.finra.interview.services;
 
 import org.finra.interview.models.Candidate;
-import org.finra.interview.models.Interviewer;
 import org.finra.interview.models.Question;
 import org.finra.interview.repositories.CandidateRepository;
-import org.finra.interview.repositories.InterviewerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +16,7 @@ public class SetUpService {
     CandidateRepository candidateRepository;
 
     @Autowired
-    InterviewerRepository interviewerRepository;
-
+    InterviewService interviewService;
 
     public void setUp(){
         Candidate candidate1 = Candidate.builder()
@@ -49,7 +46,7 @@ public class SetUpService {
                 .lastname("Test")
                 .email("test@test.test")
                 .notes("In progress")
-                .status("interviewing")
+                .status("new")
                 .build();
 
         Candidate candidate4 = Candidate.builder()
@@ -59,7 +56,7 @@ public class SetUpService {
                 .lastname("Test")
                 .email("test@test.test")
                 .notes("In progress")
-                .status("review")
+                .status("new")
                 .build();
 
         Candidate candidate5 = Candidate.builder()
@@ -69,7 +66,7 @@ public class SetUpService {
                 .lastname("Test")
                 .email("test@test.test")
                 .notes("In progress")
-                .status("hired")
+                .status("new")
                 .build();
 
         Candidate candidate6 = Candidate.builder()
@@ -79,7 +76,7 @@ public class SetUpService {
                 .lastname("Test")
                 .email("test@test.test")
                 .notes("In progress")
-                .status("rejected")
+                .status("new")
                 .build();
 
         Question q1 = Question.builder().name("question1").level("senior").type("single_answer").text("text1").answer("answer1").score(-1).build();
@@ -107,6 +104,7 @@ public class SetUpService {
 //        interviewerRepository.save(interviewer);import lombok.
 
         candidateRepository.saveAll(Arrays.asList(candidate1, candidate2, candidate3, candidate4, candidate5, candidate6));
+
 
 //        responseRepository.saveAll(Arrays.asList(response1,response2,response3,response4));
 

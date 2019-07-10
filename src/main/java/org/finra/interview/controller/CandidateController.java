@@ -46,6 +46,14 @@ public class CandidateController {
         candidateService.addQuestionsToCandidateById(questions, id);
     }
 
+//    @PutMapping("/{id}/update")
+//    @CrossOrigin(origins = "http://localhost:4200")
+//    @ResponseStatus(HttpStatus.OK)
+//    public Candidate addQuestionsToCandidateById(@RequestBody Candidate candidate)
+//    {
+//        return candidateService.save(candidate);
+//    }
+
 
     @DeleteMapping("/{id}")
     @CrossOrigin
