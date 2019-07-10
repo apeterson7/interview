@@ -28,7 +28,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
 
     @ExceptionHandler({
             QuestionNotFoundException.class,
-            FileNotFoundException.class})
+            FileNotFoundException.class
+    })
     protected ResponseEntity<Object> handleNotFound(
             Exception ex, WebRequest request) {
         return handleExceptionInternal(ex, "Book not found",
@@ -39,7 +40,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
             ConstraintViolationException.class,
             DataIntegrityViolationException.class,
             QuestionAlreadyAssignedException.class,
-            CandidateNotFoundException.class  })
+            CandidateNotFoundException.class
+    })
     public ResponseEntity<Object> handleBadRequest(
             Exception ex, WebRequest request) {
         return handleExceptionInternal(ex, ex.getLocalizedMessage(),

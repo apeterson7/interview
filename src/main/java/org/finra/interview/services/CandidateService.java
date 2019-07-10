@@ -36,9 +36,29 @@ public class CandidateService {
         );
     }
 
+    //Saves all child questions and interviews
     public Candidate save(Candidate candidate) {
 
         return candidateRepository.save(candidate);
+    }
+
+    /**
+     *  Updates a select set of fields [status, firstname, lastname, email, notes]
+     *  Other fields are not persisted
+     *
+     */
+    public Candidate update(Candidate updatedCandidate) throws CandidateNotFoundException{
+        Long id = updatedCandidate.getCandidate_id();
+        Candidate currentCandidate = candidateRepository.findById(id)
+                .orElseThrow(() -> new CandidateNotFoundException("Question "+id+" does not exit."));
+
+        currentCandidate.setStatus(updatedCandidate.getStatus());
+        currentCandidate.setFirstname(updatedCandidate.getFirstname());
+        currentCandidate.setLastname(updatedCandidate.getLastname());
+        currentCandidate.setEmail(updatedCandidate.getEmail());
+        currentCandidate.setNotes(updatedCandidate.getNotes());
+
+        return candidateRepository.save(currentCandidate);
     }
 
     public void addQuestionsToCandidateById(List<Question> questions, Long id) throws CandidateNotFoundException {

@@ -95,4 +95,10 @@ public class CandidateController {
         return candidateService.save(candidate);
     }
 
+    @PutMapping
+    @ResponseStatus(HttpStatus.OK)
+    public Candidate update(@RequestBody Candidate candidate) throws CandidateNotFoundException{
+        return candidateService.update(candidate);
+    }
+
 }

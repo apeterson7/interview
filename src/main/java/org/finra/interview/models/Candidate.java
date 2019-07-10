@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 import lombok.extern.log4j.Log4j;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -18,6 +19,7 @@ import java.util.Set;
 //hibernate
 @Entity
 @Table(name = "CANDIDATE")
+@DynamicUpdate
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "candidate_id")
