@@ -4,6 +4,7 @@ import lombok.extern.log4j.Log4j;
 import org.finra.interview.exceptions.CandidateNotFoundException;
 import org.finra.interview.exceptions.QuestionAlreadyAssignedException;
 import org.finra.interview.models.Candidate;
+import org.finra.interview.models.Interview;
 import org.finra.interview.models.Question;
 import org.finra.interview.services.CandidateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Log4j
+@CrossOrigin
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/candidates")
 public class CandidateController {
 
@@ -26,19 +27,44 @@ public class CandidateController {
     }
 
     @GetMapping
-    @CrossOrigin
     public Iterable<Candidate> findAll(){
         return candidateService.list();
     }
 
     @GetMapping("/{id}")
-    @CrossOrigin(origins = "http://localhost:4200")
     public Candidate findById(@PathVariable Long id) throws CandidateNotFoundException{
         return candidateService.findById(id);
     }
 
+    @PutMapping("/add-interview/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void createInterviewForCandidateById(@RequestBody Interview interview, @PathVariable Long id)
+            throws CandidateNotFoundException{
+        System.out.println(interview);
+
+
+        //Retrieve request candidate
+        Candidate candidate =
+                candidateService.findById(id);
+
+        //Create new Interview instance
+//        Interview interview = new Interview();
+
+        interview.setStatus("new");
+
+        //Add to candidate
+        candidate.addInterview(interview);
+
+        //Set status to pending
+        candidate.setStatus("pending");
+        System.out.println(candidate.getInterviews().get(0).getCandidate().getFirstname());
+
+        //Persist candidate
+        candidateService.save(candidate);
+
+    }
+
     @PutMapping("/{id}")
-    @CrossOrigin(origins = "http://localhost:4200")
     @ResponseStatus(HttpStatus.OK)
     public void addQuestionsToCandidateById(@RequestBody List<Question> questions, @PathVariable Long id)
             throws CandidateNotFoundException
@@ -55,8 +81,8 @@ public class CandidateController {
 //    }
 
 
+
     @DeleteMapping("/{id}")
-    @CrossOrigin
     @ResponseStatus(HttpStatus.OK)
     public void deleteCandidateById(@PathVariable Long id) throws CandidateNotFoundException{
         candidateService.removeCandidateById(id);

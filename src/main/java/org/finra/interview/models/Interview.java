@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.extern.log4j.Log4j;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
@@ -49,7 +46,13 @@ public class Interview {
     @Column(name = "INTERVIEW_ID", unique = true, nullable = false)
     private UUID interview_id;
 
+//    private User interviewer;
+
+    @Column(nullable = false, name="STATUS")
+    private String status;
+
 //    @JsonBackReference
+    @Setter(AccessLevel.NONE)
     @ManyToOne(
 //            fetch = FetchType.LAZY
             cascade = CascadeType.ALL
@@ -57,10 +60,38 @@ public class Interview {
     @JoinColumn(name = "CANDIDATE_ID")
     private Candidate candidate;
 
-//    private User interviewer;
+    /**
+     *
+     * Set new candidate.  This method keeps relationship consistency:
+     * * this candidate is removed from the previous interview
+     * * this candidate is added to the next interview
+     *
+     */
 
-    @Column(nullable = false, name="STATUS")
-    private String status;
+    public void setCandidate(Candidate candidate){
+        if(sameAsFormer(candidate))
+            return;
+
+        //set new candidate
+        Candidate oldCandidate = this.candidate;
+        this.candidate = candidate;
+
+        //remove from old owner
+        if(oldCandidate != null){
+            oldCandidate.removeInterview(this);
+        }
+
+        //add to new owner
+        if(candidate != null){
+            candidate.addInterview(this);
+        }
+
+    }
+
+    private boolean sameAsFormer(Candidate newCandidate){
+        return this.candidate==null? newCandidate == null :
+            this.candidate.equals(newCandidate);
+    }
 
     @CreationTimestamp
     @Column(name = "CREATED_TS")
@@ -69,5 +100,4 @@ public class Interview {
     @UpdateTimestamp
     @Column(name = "REVIEWED_TS")
     private LocalDateTime updated_ts;
-
 }

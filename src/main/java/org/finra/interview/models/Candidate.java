@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.extern.log4j.Log4j;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -73,11 +70,38 @@ public class Candidate {
     private List<Question> questions = new ArrayList<>();
 
 //    @JsonManagedReference
+    @Setter(AccessLevel.NONE)
     @OneToMany(
             cascade = CascadeType.ALL,
             mappedBy = "candidate"
     )
     private List<Interview> interviews = new ArrayList<>();
+
+
+    /**
+     * Safe methods to protect consistency
+     *
+     * @param interview
+     */
+    public void addInterview(Interview interview){
+        if(interviews.contains(interview))
+            return;
+
+        interviews.add(interview);
+
+        interview.setCandidate(this);
+
+    }
+
+    public void removeInterview(Interview interview){
+        if(!interviews.contains(interview))
+            return;
+
+        interviews.remove(interview);
+
+        interview.setCandidate(null);
+    }
+
 
     @CreationTimestamp
     @Column(name = "CREATED_TS")

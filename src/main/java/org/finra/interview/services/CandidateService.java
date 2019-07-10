@@ -37,8 +37,7 @@ public class CandidateService {
     }
 
     public Candidate save(Candidate candidate) {
-        log.info(candidate.toString());
-        System.out.println(candidate.toString());
+
         return candidateRepository.save(candidate);
     }
 

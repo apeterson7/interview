@@ -3,6 +3,7 @@ package org.finra.interview.controller;
 import lombok.extern.log4j.Log4j;
 import org.finra.interview.exceptions.InterviewNotFoundException;
 import org.finra.interview.exceptions.QuestionNotFoundException;
+import org.finra.interview.models.Candidate;
 import org.finra.interview.models.Interview;
 import org.finra.interview.models.Question;
 import org.finra.interview.services.EmailService;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Log4j
@@ -39,17 +41,13 @@ public class InterviewController {
     @GetMapping("/interview/{id}")
     public Interview findById(@PathVariable UUID id) throws InterviewNotFoundException { return interviewService.findById(id); }
 
-    @PostMapping("/interview")
+
+    @PutMapping("/interview")
     @ResponseStatus(HttpStatus.CREATED)
     public Interview save(@RequestBody Interview interview){
-        Interview savedInterview = interviewService.save(interview);
 
-        String email = savedInterview.getCandidate().getEmail();
-        String id = savedInterview.getInterview_id().toString();
+        return interviewService.save(interview);
 
-//        emailService.sendEmail(email, "test", id);
-
-        return savedInterview;
     }
 
 }
