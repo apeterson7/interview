@@ -8,10 +8,16 @@ import org.finra.interview.models.Candidate;
 import org.finra.interview.models.Question;
 import org.finra.interview.repositories.CandidateRepository;
 import org.finra.interview.repositories.QuestionRepository;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StopWatch;
 
 import java.util.List;
+import java.util.Timer;
 
 @Log4j
 @Service
@@ -19,6 +25,9 @@ public class CandidateService {
 
     private final CandidateRepository candidateRepository;
     private final S3Service s3Service;
+
+
+    private SessionFactory sessionFactory;
 
     @Autowired
     public CandidateService(CandidateRepository candidateRepository, S3Service s3Service){
@@ -36,6 +45,7 @@ public class CandidateService {
         );
     }
 
+//    @Transactional
     //Saves all child questions and interviews
     public Candidate save(Candidate candidate) {
 
@@ -47,8 +57,13 @@ public class CandidateService {
      *  Other fields are not persisted
      *
      */
+
     public Candidate update(Candidate updatedCandidate) throws CandidateNotFoundException{
         Long id = updatedCandidate.getCandidate_id();
+
+        log.info("updating candidate " + id);
+        System.out.println("updating candidate " + id);
+
         Candidate currentCandidate = candidateRepository.findById(id)
                 .orElseThrow(() -> new CandidateNotFoundException("Question "+id+" does not exit."));
 
@@ -61,6 +76,26 @@ public class CandidateService {
         return candidateRepository.save(currentCandidate);
     }
 
+    public void updateStatus(Long id, Integer status) throws CandidateNotFoundException{
+
+        Candidate candidate = this.findById(id);
+        candidate.setStatus(status);
+        this.save(candidate);
+
+//        StopWatch stopWatch = new StopWatch();
+//
+//        stopWatch.start();
+//        candidateRepository.updateStatus(id,status);
+//        stopWatch.stop();
+//
+//        stopWatch.getTotalTimeMillis();
+//        log.info("time " + stopWatch.getTotalTimeMillis());
+
+//        return this.findById(id);
+
+    }
+
+//    @Transactional
     public void addQuestionsToCandidateById(List<Question> questions, Long id) throws CandidateNotFoundException {
         Candidate candidate = candidateRepository.findById(id)
                 .orElseThrow(() -> new CandidateNotFoundException("Question "+id+" does not exit."));
@@ -68,6 +103,7 @@ public class CandidateService {
         candidateRepository.save(candidate);
     }
 
+//    @Transactional
     public void removeCandidateById(Long id) throws CandidateNotFoundException{
         candidateRepository.findById(id)
                 .orElseThrow(() -> new CandidateNotFoundException("Question "+id+" does not exit."));

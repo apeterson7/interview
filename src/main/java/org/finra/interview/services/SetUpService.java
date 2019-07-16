@@ -26,7 +26,7 @@ public class SetUpService {
                 .lastname("Peterson")
                 .email("test@test.test")
                 .notes("Decent...")
-                .status("new")
+                .status(1)
                 .build();
 
         Candidate candidate2 = Candidate.builder()
@@ -36,7 +36,7 @@ public class SetUpService {
                 .lastname("Test")
                 .email("test@test.test")
                 .notes("Excellent!!")
-                .status("new")
+                .status(1)
                 .build();
 
         Candidate candidate3 = Candidate.builder()
@@ -46,7 +46,7 @@ public class SetUpService {
                 .lastname("Test")
                 .email("test@test.test")
                 .notes("In progress")
-                .status("new")
+                .status(1)
                 .build();
 
         Candidate candidate4 = Candidate.builder()
@@ -56,7 +56,7 @@ public class SetUpService {
                 .lastname("Test")
                 .email("test@test.test")
                 .notes("In progress")
-                .status("new")
+                .status(1)
                 .build();
 
         Candidate candidate5 = Candidate.builder()
@@ -66,7 +66,7 @@ public class SetUpService {
                 .lastname("Test")
                 .email("test@test.test")
                 .notes("In progress")
-                .status("new")
+                .status(1)
                 .build();
 
         Candidate candidate6 = Candidate.builder()
@@ -76,7 +76,7 @@ public class SetUpService {
                 .lastname("Test")
                 .email("test@test.test")
                 .notes("In progress")
-                .status("new")
+                .status(1)
                 .build();
 
         Question q1 = Question.builder().name("question1").level("senior").type("single_answer").text("text1").answer("answer1").score(-1).build();

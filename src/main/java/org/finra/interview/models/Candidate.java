@@ -19,7 +19,7 @@ import java.util.Set;
 //hibernate
 @Entity
 @Table(name = "CANDIDATE")
-@DynamicUpdate
+@DynamicUpdate                  //This updates only changed fields when compared to what is in cache (facilitates update() in candidateService)
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "candidate_id")
@@ -60,8 +60,16 @@ public class Candidate {
     private String notes;
 
     @Column(nullable = false, name="STATUS")
-    private String status;
-    //new, interviewing, review, hired, rejected
+    private int status;
+    /**
+     *
+     * 1 - Available (New or released:  Questions can be edited, Interview Can be created)
+     * 2 - Interview In Progress (Candidate <-> Interview, Interview [state 1, 2, or 3], Question list empty, Interview Cannot be created)
+     * 3 - Hired (Question List Empty, Interview cannot be created)
+     * 4 - Rejected (Question List Empty, Interview cannot be created)
+     *
+     */
+
 
     @ManyToMany(
             cascade = CascadeType.ALL
@@ -102,6 +110,7 @@ public class Candidate {
         interviews.remove(interview);
 
         interview.setCandidate(null);
+
     }
 
 
@@ -113,12 +122,6 @@ public class Candidate {
     @Column(name = "REVIEWED_TS")
     private LocalDateTime updated_ts;
 
-    //question ids that have been assigned
-//    List<Question> questionList;
-//
-//    @OneToMany
-//    Question[] questionList;
 
-//    List<Response> responseList;
 
 }

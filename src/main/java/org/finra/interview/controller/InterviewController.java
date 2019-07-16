@@ -1,6 +1,11 @@
 package org.finra.interview.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import lombok.extern.log4j.Log4j;
+import org.finra.interview.exceptions.CandidateNotFoundException;
 import org.finra.interview.exceptions.InterviewNotFoundException;
 import org.finra.interview.exceptions.QuestionNotFoundException;
 import org.finra.interview.models.Candidate;
@@ -11,10 +16,17 @@ import org.finra.interview.services.InterviewService;
 import org.finra.interview.services.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
+
 
 @Log4j
 @RestController
@@ -42,12 +54,61 @@ public class InterviewController {
     public Interview findById(@PathVariable UUID id) throws InterviewNotFoundException { return interviewService.findById(id); }
 
 
-    @PutMapping("/interview")
+    @PostMapping("/interview")
     @ResponseStatus(HttpStatus.CREATED)
     public Interview save(@RequestBody Interview interview){
-
         return interviewService.save(interview);
 
     }
+
+//    @PutMapping("/interview")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public Interview update(@RequestBody String string) throws InterviewNotFoundException{
+//
+//
+//        System.out.println(string);
+//
+////        JSONParser parser = new JSONParser();
+////        JSONObject json = (JSONObject) parser.parse(stringToParse);
+//
+//        ObjectMapper mapper = new ObjectMapper();
+//        try{
+//            Map<String, Object > map = mapper.readValue(string, Map.class);
+//
+//            map.get("interview_id");
+//            map.get("status");
+//            map.get("");
+//
+//            JsonNode rootNode = mapper.readTree(string);
+//
+//            rootNode.findValue("interview_id").asText();
+//
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//
+//
+//
+//
+//        System.out.println(interview);
+////        System.out.println(interview.getStatus()+" "+ interview.getInterview_id());
+//        Interview ret = interviewService.update();
+//
+//        return new Interview();
+////        return new Interview();
+//
+//    }
+
+
+    @PutMapping("/interview/{id}/status/{status}")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateStatus(@PathVariable UUID id, @PathVariable Integer status) throws InterviewNotFoundException {
+        log.info("HERE INTERVIEW UPDATING "+id+" STATUS "+status);
+
+        interviewService.updateStatus(id,status);
+
+    }
+
+
 
 }

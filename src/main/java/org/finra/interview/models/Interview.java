@@ -7,11 +7,13 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 import lombok.extern.log4j.Log4j;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -20,6 +22,7 @@ import java.util.UUID;
 //Hibernate
 @Entity
 @Table(name = "INTERVIEW")
+@DynamicUpdate                  //This updates only changed fields when compared to what is in cache (facilitates update() in interviewService)
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "interview_id")
@@ -32,12 +35,6 @@ import java.util.UUID;
 public class Interview {
 
     @Id
-//    @GeneratedValue(generator = "interview_generator")
-//    @SequenceGenerator(
-//            name = "interview_generator",
-//            sequenceName = "interview_sequence",
-//            initialValue = 1000
-//    )
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
             name = "UUID",
@@ -49,7 +46,14 @@ public class Interview {
 //    private User interviewer;
 
     @Column(nullable = false, name="STATUS")
-    private String status;
+    private int status;
+    /**
+     *
+     * 1 - New (Response Objects are created, Interview is sent to candidate)
+     * 2 - Under Review (Candidate has provided responses, Cannot view interview)
+     * 3 - Finalized (User has provided feedback, candidate has been hired, rejected or released)
+     *
+     */
 
 //    @JsonBackReference
     @Setter(AccessLevel.NONE)
@@ -92,6 +96,12 @@ public class Interview {
         return this.candidate==null? newCandidate == null :
             this.candidate.equals(newCandidate);
     }
+
+    @OneToMany(
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    private List<Response> responses = new ArrayList<>();
 
     @CreationTimestamp
     @Column(name = "CREATED_TS")
