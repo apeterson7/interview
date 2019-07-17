@@ -28,49 +28,48 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
         e.printStackTrace();
     }
 
-//    @ExceptionHandler({
-//            QuestionNotFoundException.class,
-//            FileNotFoundException.class
-//    })
-//    protected ResponseEntity<Object> handleNotFound(
-//            Exception ex, WebRequest request) {
-//        return handleExceptionInternal(ex, "Book not found",
-//                new HttpHeaders(), HttpStatus.NOT_FOUND, request);
-//    }
-//
-//    @ExceptionHandler({
-//            ConstraintViolationException.class,
-//            DataIntegrityViolationException.class,
-//            QuestionAlreadyAssignedException.class,
-//            CandidateNotFoundException.class
-//    })
-//    public ResponseEntity<Object> handleBadRequest(
-//            Exception ex, WebRequest request) {
-//        return handleExceptionInternal(ex, ex.getLocalizedMessage(),
-//                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
-//    }
-//
-//    @ExceptionHandler({
-//        InvalidFormatException.class,
-//        IOException.class
-//    })
-//    public  ResponseEntity<Object> handleInvalidDataError(
-//            Exception ex, WebRequest request) {
-//
-//        return handleExceptionInternal(ex, ex.getLocalizedMessage(),
-//                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
-//    }
-//
-//    @ExceptionHandler({
-//            NotOLE2FileException.class
-//    })
-//    public  ResponseEntity<Object> handleFileFormatError(
-//            Exception ex, WebRequest request) {
-//
-//        return handleExceptionInternal(ex, "File format must be .xlsx or .xls",
-//                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
-//    }
+    @ExceptionHandler({
+            QuestionNotFoundException.class,
+            FileNotFoundException.class
+    })
+    protected ResponseEntity<Object> handleNotFound(
+            Exception ex, WebRequest request) {
+        return handleExceptionInternal(ex, "Book not found",
+                new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
 
+    @ExceptionHandler({
+            ConstraintViolationException.class,
+            DataIntegrityViolationException.class,
+            QuestionAlreadyAssignedException.class,
+            CandidateNotFoundException.class
+    })
+    public ResponseEntity<Object> handleBadRequest(
+            Exception ex, WebRequest request) {
+        return handleExceptionInternal(ex, ex.getLocalizedMessage(),
+                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler({
+        InvalidFormatException.class,
+        IOException.class
+    })
+    public  ResponseEntity<Object> handleInvalidDataError(
+            Exception ex, WebRequest request) {
+
+        return handleExceptionInternal(ex, ex.getLocalizedMessage(),
+                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler({
+            NotOLE2FileException.class
+    })
+    public  ResponseEntity<Object> handleFileFormatError(
+            Exception ex, WebRequest request) {
+
+        return handleExceptionInternal(ex, "File format must be .xlsx or .xls",
+                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
 
 }
 
