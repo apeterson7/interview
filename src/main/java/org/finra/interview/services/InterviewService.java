@@ -80,17 +80,15 @@ public class InterviewService {
         System.out.println(5);
         return interview1;
 
-//        StopWatch stopWatch = new StopWatch();
-//
-//        stopWatch.start();
-//        interviewRepository.updateStatus(id,status);
-//        stopWatch.stop();
-//
-//        stopWatch.getTotalTimeMillis();
-//        log.info("time " + stopWatch.getTotalTimeMillis());
-//
-//
-//        return this.findById(id);
+    }
+
+    public Interview submitInterview(UUID id) throws InterviewNotFoundException{
+
+        Interview interview = this.findById(id);
+
+        interview.setStatus(2);
+
+        return this.save(interview);
 
     }
 

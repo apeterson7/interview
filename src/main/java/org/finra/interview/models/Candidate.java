@@ -13,6 +13,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -122,6 +123,9 @@ public class Candidate {
     @Column(name = "REVIEWED_TS")
     private LocalDateTime updated_ts;
 
-
+    @ElementCollection
+    @CollectionTable(name = "candidate_tags", joinColumns = @JoinColumn(name = "candidate_id"))
+    @Column(name = "tags")
+    private Set<String> tags = new HashSet<>();
 
 }

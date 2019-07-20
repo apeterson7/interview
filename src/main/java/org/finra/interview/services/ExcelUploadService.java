@@ -108,17 +108,11 @@ public class ExcelUploadService {
         }else {
 
             String name = dataFormatter.formatCellValue(row.getCell(0));
-            String type = dataFormatter.formatCellValue(row.getCell(1));
-            String level = dataFormatter.formatCellValue(row.getCell(2));
-            String text = dataFormatter.formatCellValue(row.getCell(3));
-            String answer = dataFormatter.formatCellValue(row.getCell(4));
-            String score = dataFormatter.formatCellValue(row.getCell(5));
+//            String type = dataFormatter.formatCellValue(row.getCell(1));
+            String level = dataFormatter.formatCellValue(row.getCell(1));
+            String text = dataFormatter.formatCellValue(row.getCell(2));
+            String answer = dataFormatter.formatCellValue(row.getCell(3));
 
-            if (!(Arrays.asList("single answer", "multiple choice").contains(type))) {
-                log.error("error detected");
-
-                throw new InvalidFormatException("Error Row " + row.getRowNum() + ": type must be 'single answer' or 'multiple choice'");
-            }
             if (!(Arrays.asList("junior", "senior", "mid").contains(level))) {
                 log.error("error detected");
 
@@ -129,22 +123,16 @@ public class ExcelUploadService {
 
                 throw new InvalidFormatException("Error Row " + row.getRowNum() + ": text field too long");
             }
-            try {
-                Integer.parseInt(score);
-            } catch (NumberFormatException e) {
-                log.error("error detected");
 
-                throw new InvalidFormatException("Error Row " + row.getRowNum() + ": score expects integer");
-            }
 
             return Question.builder()
 //                    .question_id(null)
                     .name(name)
-                    .type(type)
+//                    .type(type)
                     .level(level)
                     .text(text)
                     .answer(answer)
-                    .score(Integer.parseInt(score))
+//                    .score(Integer.parseInt(score))
                     .build();
         }
         return null;
@@ -153,5 +141,6 @@ public class ExcelUploadService {
     public static Candidate validateCandidateRow(){
 
         return new Candidate();
+
     }
 }

@@ -65,7 +65,6 @@ public class InterviewController {
 //    @ResponseStatus(HttpStatus.CREATED)
 //    public Interview update(@RequestBody String string) throws InterviewNotFoundException{
 //
-//
 //        System.out.println(string);
 //
 ////        JSONParser parser = new JSONParser();
@@ -87,9 +86,6 @@ public class InterviewController {
 //            e.printStackTrace();
 //        }
 //
-//
-//
-//
 //        System.out.println(interview);
 ////        System.out.println(interview.getStatus()+" "+ interview.getInterview_id());
 //        Interview ret = interviewService.update();
@@ -109,6 +105,12 @@ public class InterviewController {
 
     }
 
+    @PutMapping("/submit-interview/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Interview submitInterview(@PathVariable UUID id) throws InterviewNotFoundException {
 
+        return interviewService.submitInterview(id);
+
+    }
 
 }

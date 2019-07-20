@@ -7,6 +7,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.math.BigInteger;
+import java.util.Collection;
+import java.util.List;
+
 
 public interface CandidateRepository extends CrudRepository<Candidate, Long> {
 
@@ -20,9 +24,10 @@ public interface CandidateRepository extends CrudRepository<Candidate, Long> {
 //    Candidate test(@Param("id") Long id);
 
 
-//    @Modifying(flushAutomatically = true, clearAutomatically = true)
-//    @Query(value = "update Candidate c set c.status = ? where c.candidate_id = ?",
-//            nativeQuery = true)
-//    void updateStatus(Long id, Integer status);
+    @Query(value = "select candidate_id from candidate_tags ct where ct.tags = ?1",
+            nativeQuery = true)
+    List<BigInteger> getCandidatesForTag(String tag);
+
+//    Iterable<Candidate> findAllById(Collection<Long> ids);
 
 }

@@ -43,4 +43,8 @@ public class Response {
 
     @Column(name = "RESPONSE")
     private String response;
+
+    @Column(name = "SCORE")
+    private Integer score;
+
 }

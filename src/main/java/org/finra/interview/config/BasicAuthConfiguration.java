@@ -35,6 +35,8 @@ public class BasicAuthConfiguration extends WebSecurityConfigurerAdapter {
 //            .deleteCookies("JSESSIONID")
 //            .logoutSuccessUrl("http://localhost:4200/login")
             .and()
-          .httpBasic();
+          .httpBasic()
+            .and()
+        .headers().frameOptions().sameOrigin();
     }
 }

@@ -61,6 +61,7 @@ public class CandidateController {
             Response response = Response.builder()
                     .question(question)
                     .response("")
+                    .score(0)
                     .build();
 
             responses.add(response);
@@ -126,6 +127,11 @@ public class CandidateController {
 
         candidateService.updateStatus(id,status);
 
+    }
+
+    @GetMapping("/candidates/tag/{tag}")
+    public List<Candidate> getCandidatesForTag(@PathVariable String tag){
+        return candidateService.getCandidatesForTag(tag);
     }
 
 }

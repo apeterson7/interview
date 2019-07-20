@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -31,8 +32,8 @@ public class Question {
     @Column(nullable = false, name="NAME")
     private String name;
 
-    @Column(nullable = false, name="TYPE")
-    private String type;
+//    @Column(nullable = false, name="TYPE")
+//    private String type;
 
     @Column(nullable = false, name="LEVEL")
     private String level;
@@ -40,13 +41,13 @@ public class Question {
     @Column(nullable = false, name="TEXT", length=10485760)
     private String text;
 
+//    @ElementCollection
+//    @CollectionTable(name="options", joinColumns = @JoinColumn(name="question_id"))
+//    @Column(name="options")
+//    private Set<String> options = new HashSet<>();
+
     @Column(name="ANSWER",length=10485760)
     private String answer;
 
-    @Column(name = "SCORE")
-    private Integer score;
-
-//    @Column(nullable = true)
-//    private List<String> options;
     
 }

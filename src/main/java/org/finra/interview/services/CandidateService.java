@@ -16,8 +16,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StopWatch;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Timer;
+import java.util.stream.Collector;
+
+import static java.util.stream.Collectors.toList;
 
 @Log4j
 @Service
@@ -109,6 +113,16 @@ public class CandidateService {
                 .orElseThrow(() -> new CandidateNotFoundException("Question "+id+" does not exit."));
         candidateRepository.deleteById(id);
         s3Service.deleteFileFromS3(id.toString());
+    }
+
+    public List<Candidate> getCandidatesForTag(String tag){
+
+        //Convert from BigInteger value to Long
+        List<Long> longIds = candidateRepository.getCandidatesForTag(tag)
+                .stream().map(id -> id.longValue()).collect(toList());
+
+        return (List) candidateRepository.findAllById(longIds);
+
     }
 
 
