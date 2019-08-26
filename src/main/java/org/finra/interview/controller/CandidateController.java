@@ -129,4 +129,15 @@ public class CandidateController {
         return candidateService.getCandidatesForTag(tag);
     }
 
+    @GetMapping("/candidates/tags")
+    public List<Candidate> getCandidatesForTag(@RequestParam(value="tag") List<String> tags){
+        return candidateService.getCandidatesForTag(tags);
+    }
+
+    @GetMapping("candidates/tags/all")
+    public List<String> getTags(){
+        return candidateService.getTags();
+    }
+
+
 }
