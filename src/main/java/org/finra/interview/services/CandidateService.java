@@ -125,5 +125,19 @@ public class CandidateService {
 
     }
 
+    public List<String> getTags(){
+        return candidateRepository.getTags();
+    }
+
+    public List<Candidate> getCandidatesForTag(List<String> tags){
+
+        //Convert from BigInteger value to Long
+        List<Long> longIds = candidateRepository.getCandidatesForTag(tags)
+                .stream().map(id -> id.longValue()).collect(toList());
+
+        return (List) candidateRepository.findAllById(longIds);
+
+    }
+
 
 }

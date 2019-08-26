@@ -28,6 +28,15 @@ public interface CandidateRepository extends CrudRepository<Candidate, Long> {
             nativeQuery = true)
     List<BigInteger> getCandidatesForTag(String tag);
 
+    @Query(value = "select candidate_id from candidate_tags ct where ct.tags in (:tags)",
+                     nativeQuery = true)
+    List<BigInteger> getCandidatesForTag(@Param("tags") List<String> tags);
+
+
+    @Query(value = "select distinct tags from candidate_tags",
+            nativeQuery = true)
+    List<String> getTags();
+
 //    Iterable<Candidate> findAllById(Collection<Long> ids);
 
 }
