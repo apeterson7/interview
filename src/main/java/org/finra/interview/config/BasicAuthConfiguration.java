@@ -25,10 +25,15 @@ public class BasicAuthConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
           .authorizeRequests()
           .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+            .antMatchers(HttpMethod.POST, "/api/resume/**").permitAll()
+            .antMatchers(HttpMethod.GET, "/api/resume/**").permitAll()
+
 //          .antMatchers("/api/**").permitAll()
 //          .antMatchers("/login","/user").permitAll()
           .anyRequest()
-          .authenticated()
+//          .authenticated()
+                .permitAll()
+
 //          .and()
 //            .logout()
 //            .invalidateHttpSession(true)

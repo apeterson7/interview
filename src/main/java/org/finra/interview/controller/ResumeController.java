@@ -4,9 +4,7 @@ import lombok.extern.log4j.Log4j;
 import org.finra.interview.services.S3Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.File;
-import java.io.IOException;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Log4j
@@ -16,25 +14,44 @@ import java.io.IOException;
 public class ResumeController {
 
 
-    private final S3Service s3Service;
+        private S3Service s3Service;
 
-    @Autowired
-    public ResumeController(S3Service s3Service){
-        this.s3Service = s3Service;
-    }
+        @Autowired
+        ResumeController(S3Service amazonClient) {
+            this.s3Service = amazonClient;
+        }
 
-    @GetMapping("/candidate/{id}")
-    @CrossOrigin
-    public File getResume(@PathVariable String id) throws IOException{
+        @PostMapping("/uploadFile")
+        public String uploadFile(@RequestPart(value = "file") MultipartFile file) {
+            return this.s3Service.uploadFile(file);
+        }
 
-        return s3Service.retrieveFileFromS3(id);
-    }
+        @DeleteMapping("/deleteFile")
+        public String deleteFile(@RequestPart(value = "url") String fileUrl) {
+            return this.s3Service.deleteFileFromS3Bucket(fileUrl);
+        }
 
-    @PostMapping("/candidate/{id}")
-    @CrossOrigin
-    public void uploadResume(@PathVariable String id, @RequestBody File file){
 
-        s3Service.uploadFileToS3(file, id);
-    }
+//
+//    private final S3Service s3Service;
+//
+//    @Autowired
+//    public ResumeController(S3Service s3Service){
+//        this.s3Service = s3Service;
+//    }
+//
+//    @GetMapping("/candidate/{id}")
+//    @CrossOrigin
+//    public File getResume(@PathVariable String id) throws IOException{
+//
+//        return s3Service.retrieveFileFromS3(id);
+//    }
+//
+//    @PostMapping("/candidate/{id}")
+//    @CrossOrigin
+//    public void uploadResume(@PathVariable String id, @RequestBody File file){
+//
+//        s3Service.uploadFileToS3(file, id);
+//    }
 
 }

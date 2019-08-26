@@ -62,6 +62,9 @@ public class Candidate {
 
     @Column(nullable = false, name="STATUS")
     private int status;
+
+    @Column(name = "RESUME")
+    private String resume;
     /**
      *
      * 1 - Available (New or released:  Questions can be edited, Interview Can be created)

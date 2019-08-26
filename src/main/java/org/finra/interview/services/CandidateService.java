@@ -107,13 +107,13 @@ public class CandidateService {
         candidateRepository.save(candidate);
     }
 
-//    @Transactional
-    public void removeCandidateById(Long id) throws CandidateNotFoundException{
-        candidateRepository.findById(id)
-                .orElseThrow(() -> new CandidateNotFoundException("Question "+id+" does not exit."));
-        candidateRepository.deleteById(id);
-        s3Service.deleteFileFromS3(id.toString());
-    }
+////    @Transactional
+//    public void removeCandidateById(Long id) throws CandidateNotFoundException{
+//        candidateRepository.findById(id)
+//                .orElseThrow(() -> new CandidateNotFoundException("Question "+id+" does not exit."));
+//        candidateRepository.deleteById(id);
+//        s3Service.deleteFileFromS3(id.toString());
+//    }
 
     public List<Candidate> getCandidatesForTag(String tag){
 

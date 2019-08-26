@@ -99,12 +99,7 @@ public class CandidateController {
 //        return candidateService.save(candidate);
 //    }
 
-    @DeleteMapping("/candidate/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public void deleteCandidateById(@PathVariable Long id) throws CandidateNotFoundException{
-        candidateService.removeCandidateById(id);
 
-    }
 
     @PostMapping("/candidates")
     @ResponseStatus(HttpStatus.CREATED)

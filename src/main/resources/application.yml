@@ -1,0 +1,51 @@
+log4j:
+    configuration: src/main/resources/log4j.properties
+server:
+    error:
+        path: /error2
+
+amazonProperties:
+    endpointUrl: https://s3.us-east-2.amazonaws.com
+    accessKey: AKIA52LAZQCO3NVJ4B2U
+    secretKey: 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
+    bucketName: resume-finra
+
+spring:
+    application:
+        name: Interviews
+#    datasource:
+#        driver-class-name: org.postgresql.Driver
+#        password: Lupita21!!
+#        url: jdbc:postgresql://interview-db.cbwlco05uxwf.us-east-2.rds.amazonaws.com:5432/interview_db
+#        username: alexcpeterson7
+    datasource:
+        url: jdbc:h2:mem:testdb
+        driverClassName: org.h2.Driver
+        username: sa
+        spring.datasource.password: password
+        database-platform: org.hibernate.dialect.H2Dialect
+    jpa:
+        database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+        hibernate:
+            ddl-auto: create-drop
+        properties:
+            hibernate:
+                temp:
+                    use_jdbc_metadata_defaults: false
+    mail:
+        host: smtp.gmail.com
+        password: Lupita21!
+        port: 587
+        properties:
+            mail:
+                smtp:
+                    auth: true
+                    starttls:
+                        enable: true
+        username: alexcpeterson7
+    thymeleaf:
+        cache: false
+        enabled: true
+        prefix: classpath:/templates/
+        suffix: .html
+

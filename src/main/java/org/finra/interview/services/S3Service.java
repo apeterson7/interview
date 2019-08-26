@@ -1,73 +1,84 @@
 package org.finra.interview.services;
 
-import com.amazonaws.services.s3.model.ListObjectsV2Result;
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
-import com.amazonaws.services.s3.model.S3ObjectSummary;
-import lombok.extern.log4j.Log4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.AmazonServiceException;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.annotation.PostConstruct;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
-@Log4j
 @Service
 public class S3Service {
 
+    private AmazonS3 s3client;
 
+    @Value("${amazonProperties.endpointUrl}")
+    private String endpointUrl;
+    @Value("${amazonProperties.bucketName}")
+    private String bucketName;
+    @Value("${amazonProperties.accessKey}")
+    private String accessKey;
+    @Value("${amazonProperties.secretKey}")
+    private String secretKey;
 
-    public void uploadFileToS3(File file, String key_name){
-        log.info(String.format("Uploading %s to S3 bucket %s...\n", file.getName() , "resumes"));
-        String bucket_name = "resumes";
-
-        final AmazonS3 s3 = AmazonS3ClientBuilder.defaultClient();
-        s3.putObject(bucket_name, key_name, file);
-
+    @PostConstruct
+    private void initializeAmazon() {
+        AWSCredentials credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);
+        this.s3client = new AmazonS3Client(credentials);
     }
 
-    public File retrieveFileFromS3(String key_name) throws AmazonServiceException, IOException {
-        final AmazonS3 s3 = AmazonS3ClientBuilder.defaultClient();
-        String bucket_name = "resumes";
-
-        S3Object o = s3.getObject(bucket_name, key_name);
-        S3ObjectInputStream s3is = o.getObjectContent();
-
-        File f = new File(key_name);
-        FileOutputStream fos = new FileOutputStream(f);
-        byte[] read_buf = new byte[1024];
-        int read_len = 0;
-        while ((read_len = s3is.read(read_buf)) > 0) {
-            fos.write(read_buf, 0, read_len);
-        }
-
-        s3is.close();
+    private File convertMultiPartToFile(MultipartFile file) throws IOException {
+        File convFile = new File(file.getOriginalFilename());
+        FileOutputStream fos = new FileOutputStream(convFile);
+        fos.write(file.getBytes());
         fos.close();
-
-        return f;
+        return convFile;
     }
 
-    public void deleteFileFromS3(String key_name) throws AmazonServiceException{
-        String bucket_name = "resumes";
+    private String generateFileName(MultipartFile multiPart) {
+        return new Date().getTime() + "-" + multiPart.getOriginalFilename().replace(" ", "_");
+    }
 
-        final AmazonS3 s3 = AmazonS3ClientBuilder.defaultClient();
-        ListObjectsV2Result result = s3.listObjectsV2(bucket_name);
-        List<S3ObjectSummary> objects = result.getObjectSummaries();
+    private void uploadFileTos3bucket(String fileName, File file) {
+        s3client.putObject(new PutObjectRequest(bucketName, fileName, file)
+                .withCannedAcl(CannedAccessControlList.PublicRead));
+    }
 
-        List<String> keys = new ArrayList<>();
-        for (S3ObjectSummary os: objects) {
-            keys.add(os.getKey());
-            System.out.println("* " + os.getKey());
+    public String uploadFile(MultipartFile multipartFile) {
+
+        System.out.println(endpointUrl);
+        System.out.println(bucketName);
+        System.out.println(accessKey);
+        System.out.println(secretKey);
+
+
+        String fileUrl = "";
+        try {
+            File file = convertMultiPartToFile(multipartFile);
+            String fileName = generateFileName(multipartFile);
+            fileUrl = endpointUrl + "/" + bucketName + "/" + fileName;
+            uploadFileTos3bucket(fileName, file);
+            file.delete();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        if(keys.contains(key_name)){
-            s3.deleteObject(bucket_name, key_name);
-        }
+        return fileUrl;
+    }
+
+    public String deleteFileFromS3Bucket(String fileUrl) {
+        String fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
+        s3client.deleteObject(new DeleteObjectRequest(bucketName + "/", fileName));
+        return "Successfully deleted";
     }
 
 }
