@@ -4,6 +4,8 @@ import org.finra.interview.models.Candidate;
 import org.finra.interview.models.Question;
 import org.finra.interview.repositories.CandidateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 
@@ -20,6 +22,7 @@ public class SetUpService {
     @Autowired
     InterviewService interviewService;
 
+    @EventListener(ApplicationReadyEvent.class)
     public void setUp(){
         Candidate candidate1 = Candidate.builder()
                 .username("Sean")

@@ -13,21 +13,21 @@ amazonProperties:
 spring:
     application:
         name: Interviews
-#    datasource:
-#        driver-class-name: org.postgresql.Driver
-#        password: Lupita21!!
-#        url: jdbc:postgresql://interview-db.cbwlco05uxwf.us-east-2.rds.amazonaws.com:5432/interview_db
-#        username: alexcpeterson7
     datasource:
-        url: jdbc:h2:mem:testdb
-        driverClassName: org.h2.Driver
-        username: sa
-        spring.datasource.password: password
-        database-platform: org.hibernate.dialect.H2Dialect
+        driver-class-name: org.postgresql.Driver
+        password: Lupita21!!
+        url: jdbc:postgresql://interview-db.cbwlco05uxwf.us-east-2.rds.amazonaws.com:5432/interview_db
+        username: alexcpeterson7
+#    datasource:
+#        url: jdbc:h2:mem:testdb
+#        driverClassName: org.h2.Driver
+#        username: sa
+#        password: password
+#        database-platform: org.hibernate.dialect.H2Dialect
     jpa:
         database-platform: org.hibernate.dialect.PostgreSQL9Dialect
         hibernate:
-            ddl-auto: create-drop
+            ddl-auto: update
         properties:
             hibernate:
                 temp:
@@ -48,4 +48,7 @@ spring:
         enabled: true
         prefix: classpath:/templates/
         suffix: .html
-
+    h2:
+        console:
+            enabled: true
+            path: /h2-console

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
@@ -36,6 +37,13 @@ public interface CandidateRepository extends CrudRepository<Candidate, Long> {
     @Query(value = "select distinct tags from candidate_tags",
             nativeQuery = true)
     List<String> getTags();
+
+
+    @Modifying
+    @Transactional
+//    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Query("update Candidate c set c.resume = :resumeId where c.candidate_id = :id")
+    void setResumeId(@Param("id") Long id, @Param("resumeId") String resumeId);
 
 //    Iterable<Candidate> findAllById(Collection<Long> ids);
 

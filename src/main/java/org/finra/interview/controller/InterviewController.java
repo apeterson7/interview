@@ -1,14 +1,8 @@
 package org.finra.interview.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+
 import lombok.extern.log4j.Log4j;
-import org.finra.interview.exceptions.CandidateNotFoundException;
 import org.finra.interview.exceptions.InterviewNotFoundException;
-import org.finra.interview.exceptions.QuestionNotFoundException;
-import org.finra.interview.models.Candidate;
 import org.finra.interview.models.Interview;
 import org.finra.interview.models.Question;
 import org.finra.interview.services.EmailService;
@@ -20,12 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 
 @Log4j

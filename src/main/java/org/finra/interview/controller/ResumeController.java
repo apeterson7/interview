@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+
 
 @Log4j
 @RestController
@@ -21,9 +23,15 @@ public class ResumeController {
             this.s3Service = amazonClient;
         }
 
-        @PostMapping("/uploadFile")
-        public String uploadFile(@RequestPart(value = "file") MultipartFile file) {
-            return this.s3Service.uploadFile(file);
+        @PostMapping("/uploadResume/{candidateId}")
+        public String uploadFile(@RequestPart(value = "file") MultipartFile file, @PathVariable Long candidateId) {
+            System.out.println(file.getSize()+" "+ candidateId);
+            return this.s3Service.uploadResume(file, candidateId);
+        }
+
+        @GetMapping("/resume/{candidateId}/{resumeId}")
+        public byte[] uploadFile(@PathVariable Long candidateId, @PathVariable String resumeId) {
+            return this.s3Service.getResume(candidateId, resumeId);
         }
 
         @DeleteMapping("/deleteFile")
