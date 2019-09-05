@@ -110,4 +110,7 @@ public class Interview {
     @UpdateTimestamp
     @Column(name = "REVIEWED_TS")
     private LocalDateTime updated_ts;
+
+
+//    private User user;
 }

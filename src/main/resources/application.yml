@@ -6,8 +6,8 @@ server:
 
 amazonProperties:
     endpointUrl: https://s3.us-east-2.amazonaws.com
-    accessKey: AKIA52LAZQCO3NVJ4B2U
-    secretKey: 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
+    accessKey: AKIA52LAZQCOW4VJG2HW
+    secretKey: 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
     bucketName: resume-finra
 
 spring:
@@ -27,7 +27,7 @@ spring:
     jpa:
         database-platform: org.hibernate.dialect.PostgreSQL9Dialect
         hibernate:
-            ddl-auto: update
+            ddl-auto: create
         properties:
             hibernate:
                 temp:

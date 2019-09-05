@@ -2,16 +2,20 @@ package org.finra.interview.services;
 
 import org.finra.interview.models.Candidate;
 import org.finra.interview.models.Question;
+import org.finra.interview.models.User;
 import org.finra.interview.repositories.CandidateRepository;
+import org.finra.interview.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 
 @Service
 public class SetUpService {
@@ -20,9 +24,14 @@ public class SetUpService {
     CandidateRepository candidateRepository;
 
     @Autowired
-    InterviewService interviewService;
+    private PasswordEncoder passwordEncoder;
 
-    @EventListener(ApplicationReadyEvent.class)
+
+
+    @Autowired
+    UserRepository userRepository;
+
+//    @EventListener(ApplicationReadyEvent.class)
     public void setUp(){
         Candidate candidate1 = Candidate.builder()
                 .username("Sean")
@@ -97,32 +106,17 @@ public class SetUpService {
         candidate1.setQuestions(Arrays.asList(q1,q2));
         candidate2.setQuestions(Arrays.asList(q2,q3));
 
-//        Response response1 = Response.builder().Question(q1).candidate(candidate1).build();
-//        Response response2 = Response.builder().Question(q2).candidate(candidate1).build();
-//        Response response3 = Response.builder().Question(q2).candidate(candidate2).build();
-//        Response response4 = Response.builder().question(q3).candidate(candidate2).build();
-
-
-//        candidate1.setResponses(Arrays.asList(response1, response2));
-//        candidate2.setResponses(Arrays.asList(response3, response4));
-
-//        Interviewer interviewer = Interviewer.builder().email("test@test.test").firstname("alex").lastname("peterson").username("interviewer1").password("pword").build();
-
-//        interviewer.addCandidate(candidate1);
-//        interviewer.addCandidate(candidate2);
-
-//        interviewerRepository.save(interviewer);import lombok.
-
         candidateRepository.saveAll(Arrays.asList(candidate1, candidate2, candidate3, candidate4, candidate5, candidate6));
 
 
-//        responseRepository.saveAll(Arrays.asList(response1,response2,response3,response4));
+        // Create users
+        User dan = new User("dan",passwordEncoder.encode("dan123"),"USER","");
+        User admin = new User("admin",passwordEncoder.encode("admin123"),"ADMIN","ACCESS_TEST1,ACCESS_TEST2");
+        User manager = new User("manager",passwordEncoder.encode("manager123"),"MANAGER","ACCESS_TEST1");
 
+        List<User> users = Arrays.asList(dan,admin,manager);
 
-
-        // fetch all categories
-//        for (Candidate candidate : candidateRepository.findAll()) {
-//            System.out.println((candidate.toString()));
-//        }
+        // Save to db
+        userRepository.saveAll(users);
     }
 }
